@@ -1,31 +1,11 @@
-# General Git Ignore
-HELP.md
-
-# Gradle
-.gradle/
+.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-**/build/classes/**  # 빌드된 클래스 파일 제외
-**/build/libs/**     # 생성된 JAR 파일 제외
-**/build/reports/**  # 테스트 및 빌드 리포트 제외
-**/build/tmp/**      # 임시 빌드 파일 제외
 
-# STS (Spring Tool Suite)
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings/
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-# IntelliJ IDEA
-.idea/
+### IntelliJ IDEA ###
+.idea
 *.iws
 *.iml
 *.ipr
@@ -33,41 +13,30 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-# NetBeans
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
 
-# VS Code
+### VS Code ###
 .vscode/
 
-# Logs and temp files
-*.log
-*.tmp
+### Mac OS ###
 .DS_Store
-Thumbs.db
 
-# Compiled Java class files
-*.class
-
-# Maven
-.mvn/
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-
-# Spring Boot specific
-*.war
-*.jar
-!**/src/main/resources/application*.yml
-!**/src/main/resources/application*.properties
-
-# Security
-.env
-secrets.env
+### Discodeit ###
+.discodeit

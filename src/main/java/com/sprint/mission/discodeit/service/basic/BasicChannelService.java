@@ -4,90 +4,93 @@ import com.sprint.mission.discodeit.dto.ChannelDto;
 import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.repository.ChannelRepository;
 import com.sprint.mission.discodeit.service.ChannelService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class BasicChannelService implements ChannelService {
-    private static final Logger log = LoggerFactory.getLogger(BasicChannelService.class);
-    private final ChannelRepository channelRepository;
 
-    public BasicChannelService(ChannelRepository channelRepository) {
-        this.channelRepository = channelRepository;
-    }
+    private final ChannelRepository channelRepository;
 
     @Override
     public ChannelDto createChannel(ChannelDto channelDto) {
-        log.info("채널을 생성합니다: {}", channelDto.getName());
-        Channel channel = new Channel(
-                channelDto.getCreatedAt(),
-                channelDto.getType(),
-                channelDto.getName(),
-                channelDto.getDescription()
-        );
-        channelRepository.save(channel);
+        Channel channel = new Channel();
+        channel.setType(channelDto.getType());
+        channel.setName(channelDto.getName());
+        channel.setDescription(channelDto.getDescription());
+        channel.setParticipantIds(channelDto.getParticipantIds());
+        channel.setCreatedAt(Instant.now());
+        channel.setUpdatedAt(Instant.now());
+        channel.setLastMessageAt(null);
+        Channel saved = channelRepository.save(channel);
         return new ChannelDto(
-                channel.getId(),
-                channel.getName(),
-                channel.getDescription(),
-                channel.getType(),
-                channel.getCreatedAt(),
-                channelDto.getMemberIds()
+                saved.getId(),
+                saved.getType(),
+                saved.getName(),
+                saved.getDescription(),
+                saved.getParticipantIds(),
+                saved.getLastMessageAt()
         );
     }
 
     @Override
     public ChannelDto findChannelById(UUID channelId) {
         Channel channel = channelRepository.findById(channelId)
-                .orElseThrow(() -> new RuntimeException("해당 ID로 채널을 찾을 수 없습니다: " + channelId));
+                .orElseThrow(() -> new RuntimeException("Channel not found with id: " + channelId));
         return new ChannelDto(
                 channel.getId(),
+                channel.getType(),
                 channel.getName(),
                 channel.getDescription(),
-                channel.getType(),
-                channel.getCreatedAt(),
-                null
+                channel.getParticipantIds(),
+                channel.getLastMessageAt()
         );
     }
 
     @Override
-    public List<ChannelDto> findAllChannels() {
+    public List<ChannelDto> findAllChannelsByUserId(UUID userId) {
+        // 예시: 모든 채널 중, participantIds에 userId가 포함된 채널만 반환
         return channelRepository.findAll().stream()
-                .map(channel -> new ChannelDto(
-                        channel.getId(),
-                        channel.getName(),
-                        channel.getDescription(),
-                        channel.getType(),
-                        channel.getCreatedAt(),
-                        null
+                .filter(c -> c.getParticipantIds() != null && c.getParticipantIds().contains(userId))
+                .map(c -> new ChannelDto(
+                        c.getId(),
+                        c.getType(),
+                        c.getName(),
+                        c.getDescription(),
+                        c.getParticipantIds(),
+                        c.getLastMessageAt()
                 ))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ChannelDto updateChannel(UUID channelId, ChannelDto channelDto) {
-        Channel channel = channelRepository.findById(channelId)
-                .orElseThrow(() -> new RuntimeException("해당 ID로 채널을 찾을 수 없습니다: " + channelId));
-        channel.update(channelDto.getName(), channelDto.getDescription());
-        channelRepository.save(channel);
-        return new ChannelDto(
-                channel.getId(),
-                channel.getName(),
-                channel.getDescription(),
-                channel.getType(),
-                channel.getCreatedAt(),
-                channelDto.getMemberIds()
-        );
+    public void deleteChannel(UUID channelId) {
+        channelRepository.deleteById(channelId);
     }
 
     @Override
-    public void deleteChannel(UUID channelId) {
-        log.info("채널을 삭제합니다: {}", channelId);
-        channelRepository.deleteById(channelId);
+    public ChannelDto updateChannel(UUID channelId, ChannelDto channelDto) {
+        Channel channel = channelRepository.findById(channelId)
+                .orElseThrow(() -> new RuntimeException("Channel not found with id: " + channelId));
+        if ("PRIVATE".equalsIgnoreCase(channel.getType())) {
+            throw new RuntimeException("Private channel cannot be updated");
+        }
+        channel.setName(channelDto.getName());
+        channel.setDescription(channelDto.getDescription());
+        channel.setUpdatedAt(Instant.now());
+        Channel updated = channelRepository.save(channel);
+        return new ChannelDto(
+                updated.getId(),
+                updated.getType(),
+                updated.getName(),
+                updated.getDescription(),
+                updated.getParticipantIds(),
+                updated.getLastMessageAt()
+        );
     }
 }

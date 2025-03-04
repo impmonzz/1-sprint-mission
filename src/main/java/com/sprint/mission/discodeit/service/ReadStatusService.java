@@ -8,6 +8,6 @@ public interface ReadStatusService {
   ReadStatusDto createReadStatus(UUID userId, UUID channelId, Instant lastReadAt);
   ReadStatusDto findReadStatusById(UUID id);
   ReadStatusDto findLastReadMessage(UUID userId, UUID channelId);
-  void updateLastReadAt(UUID id, Instant newTime);
+  void updateReadStatus(UUID id, Instant newTime);
   void deleteReadStatus(UUID id);
 }

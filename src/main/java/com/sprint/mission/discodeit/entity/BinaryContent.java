@@ -1,20 +1,27 @@
 package com.sprint.mission.discodeit.entity;
 
-import lombok.AccessLevel;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
+import java.time.Instant;
 import java.util.UUID;
 
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class BinaryContent implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class BinaryContent {
 
-    // 디폴트 생성자로 객체 생성 시, 자동으로 랜덤 UUID가 부여됩니다.
-    private UUID id = UUID.randomUUID();
-    private byte[] data;
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @Lob
+    private byte[] bytes;
+
+    private String fileName;
+    private Long size;
+    private String contentType;
+    private Instant createdAt;
 }

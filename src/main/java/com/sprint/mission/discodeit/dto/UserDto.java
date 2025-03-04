@@ -1,19 +1,20 @@
 package com.sprint.mission.discodeit.dto;
 
-import com.sprint.mission.discodeit.entity.UserStatus;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-
+import java.time.Instant;
 import java.util.UUID;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
     private UUID id;
+    private Instant createdAt;
+    private Instant updatedAt;
     private String username;
     private String email;
     private String password;
-    private UserStatus status;
+    private UUID profileId;
 }

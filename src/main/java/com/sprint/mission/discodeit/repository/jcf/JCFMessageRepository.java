@@ -2,45 +2,25 @@ package com.sprint.mission.discodeit.repository.jcf;
 
 import com.sprint.mission.discodeit.entity.Message;
 import com.sprint.mission.discodeit.repository.MessageRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
+import jakarta.persistence.EntityManager;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
 
-@Repository
-public class JCFMessageRepository implements MessageRepository {
-    private final Map<UUID, Message> storage = new ConcurrentHashMap<>();
+public class JCFMessageRepository extends SimpleJpaRepository<Message, UUID> implements MessageRepository {
 
-    @Override
-    public Message save(Message message) {
-        storage.put(message.getId(), message);
-        return message;
+    private final EntityManager entityManager;
+
+    public JCFMessageRepository(EntityManager em) {
+        super(Message.class, em);
+        this.entityManager = em;
     }
 
     @Override
-    public Optional<Message> findById(UUID id) {
-        return Optional.ofNullable(storage.get(id));
-    }
-
-    @Override
-    public List<Message> findAll() {
-        return new ArrayList<>(storage.values());
-    }
-
-    @Override
-    public List<Message> findAllByChannelId(UUID channelId) {
-        return storage.values().stream()
-                .filter(message -> message.getChannelId().equals(channelId))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public void deleteById(UUID id) {
-        storage.remove(id);
+    public List<Message> findByChannelId(UUID channelId) {
+        return this.entityManager
+                .createQuery("SELECT m FROM Message m WHERE m.channelId = :channelId", Message.class)
+                .setParameter("channelId", channelId)
+                .getResultList();
     }
 }
