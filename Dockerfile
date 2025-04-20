@@ -44,7 +44,7 @@ RUN ./gradlew clean build -x test --no-daemon
 # ================= 2단계: 실행(Runtime) =================
 # 최소한의 JRE 베이스 이미지(Alpine 기반 Amazon Corretto 17)를 사용하여 새롭고 깨끗한 단계를 시작합니다.
 # JRE 버전(-jre)을 사용하는 것은 컴파일된 애플리케이션 실행에 충분하며 이미지 크기를 줄여줍니다.
-FROM amazoncorretto:17-alpine-jre
+FROM amazoncorretto:17-alpine
 
 # 실행 환경의 작업 디렉토리를 설정합니다.
 WORKDIR /app
