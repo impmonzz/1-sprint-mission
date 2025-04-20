@@ -32,12 +32,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
+import com.sprint.mission.discodeit.IntegrationTestBase; // IntegrationTestBase 임포트 추가
 
-@SpringBootTest
+// @SpringBootTest // 제거 (IntegrationTestBase 에서 상속받음)
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+// @ActiveProfiles("test") // 제거 (IntegrationTestBase 에서 상속받음)
 @Transactional
-class ChannelApiIntegrationTest {
+class ChannelApiIntegrationTest extends IntegrationTestBase {
 
   @Autowired
   private MockMvc mockMvc;

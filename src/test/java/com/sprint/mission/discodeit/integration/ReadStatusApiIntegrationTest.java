@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sprint.mission.discodeit.IntegrationTestBase;
 import com.sprint.mission.discodeit.dto.data.ChannelDto;
 import com.sprint.mission.discodeit.dto.data.ReadStatusDto;
 import com.sprint.mission.discodeit.dto.data.UserDto;
@@ -34,11 +35,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-@SpringBootTest
+// @SpringBootTest
 @AutoConfigureMockMvc
-@ActiveProfiles("test")
+// @ActiveProfiles("test")
 @Transactional
-class ReadStatusApiIntegrationTest {
+class ReadStatusApiIntegrationTest  extends IntegrationTestBase {
 
   @Autowired
   private MockMvc mockMvc;

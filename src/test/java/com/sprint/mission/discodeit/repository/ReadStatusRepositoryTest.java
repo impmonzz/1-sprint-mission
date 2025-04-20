@@ -2,6 +2,7 @@ package com.sprint.mission.discodeit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.sprint.mission.discodeit.IntegrationTestBase;
 import com.sprint.mission.discodeit.entity.BinaryContent;
 import com.sprint.mission.discodeit.entity.Channel;
 import com.sprint.mission.discodeit.entity.ChannelType;
@@ -23,10 +24,10 @@ import org.springframework.test.context.ActiveProfiles;
 /**
  * ReadStatusRepository 슬라이스 테스트
  */
-@DataJpaTest
+// @DataJpaTest
 @EnableJpaAuditing
-@ActiveProfiles("test")
-class ReadStatusRepositoryTest {
+// @ActiveProfiles("test")
+class ReadStatusRepositoryTest  extends IntegrationTestBase {
 
   @Autowired
   private ReadStatusRepository readStatusRepository;

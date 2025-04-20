@@ -45,3 +45,6 @@ bin/
 .*
 !.gitignore
 !.dockerignore
+
+# 환경 변수 파일 (Git 관리에서 제외)
+.env
