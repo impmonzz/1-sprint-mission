@@ -40,6 +40,8 @@ COPY src ./src
 # '-x test' 옵션은 Docker 이미지 빌드 중 테스트 실행을 건너뜁니다.
 RUN ./gradlew clean build -x test --no-daemon
 
+# 생성된 JAR 파일 이름을 확인하기 위해 build/libs 디렉토리 내용을 출력합니다.
+RUN ls -l /build-env/build/libs
 
 # ================= 2단계: 실행(Runtime) =================
 # 최소한의 JRE 베이스 이미지(Alpine 기반 Amazon Corretto 17)를 사용하여 새롭고 깨끗한 단계를 시작합니다.
